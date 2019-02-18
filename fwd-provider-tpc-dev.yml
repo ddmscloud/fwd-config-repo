@@ -2,7 +2,7 @@ spring:
   cache:
     cache-names: tpc-cache
   datasource:
-    url: jdbc:mysql://paascloud-db-mysql:3306/paascloud_tpc?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://fwd-db-mysql:3306/fwd_tpc?characterEncoding=utf8&useSSL=false
 
 liquibase:
   change-log: classpath:liquibase/index.xml
@@ -11,13 +11,13 @@ liquibase:
   url: ${spring.datasource.url}
 
 mybatis:
-  type-aliases-package: com.paascloud.provider.model.domain
+  type-aliases-package: com.fwd.provider.model.domain
   mapper-locations: classpath:mapper/*.xml,classpath*:sdk/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
 
 mapper:
-  mappers: com.paascloud.core.mybatis.MyMapper
+  mappers: com.fwd.common.base.BaseMapper
   not-empty: false
   identity: MYSQL
 
@@ -30,17 +30,17 @@ pagehelper:
 security:
   oauth2:
     client:
-      clientId: paascloud-client-mdc
-      clientSecret: paascloudClientSecret
-      access-token-uri: http://paascloud-gateway:7979/uac/oauth/token
-      user-authorization-uri: http://paascloud-gateway:7979/uac/oauth/authorize
+      clientId: fwd-client-mdc
+      clientSecret: fwdClientSecret
+      access-token-uri: http://fwd-gateway:7979/uac/oauth/token
+      user-authorization-uri: http://fwd-gateway:7979/uac/oauth/authorize
     resource:
-      user-info-uri: http://paascloud-gateway:7979/uac/user
+      user-info-uri: http://fwd-gateway:7979/uac/user
       prefer-token-info: false
       jwt:
-        key-uri: http://paascloud-provider-uac:8000/oauth/token_key
+        key-uri: http://fwd-provider-uac:8000/oauth/token_key
 
-paascloud:
+fwd:
   enableSqlLogInterceptor: false
   dingTalk:
     webhookToken:
@@ -57,11 +57,11 @@ paascloud:
       enable: false
       reliableMessageConsumer: false
       reliableMessageProducer: true
-      namesrvAddr: paascloud-mq-rocket:9876
-      instanceName: paascloud-provider-tpc
+      namesrvAddr: fwd-mq-rocket:9876
+      instanceName: fwd-provider-tpc
       producerGroup: PID_TPC
   oauth2:
-    jwtSigningKey: paascloud
+    jwtSigningKey: fwd
     client:
       id: ${security.oauth2.resource.id}
       accessTokenUrl: ${security.oauth2.client.access-token-uri}
@@ -70,8 +70,8 @@ paascloud:
       clientAuthenticationScheme: header
       tokenStore: jwt
   zk:
-    zkAddressList: paascloud-provider-zk:2181
-    namespace: paascloud-elastic-job
+    zkAddressList: fwd-provider-zk:2181
+    namespace: fwd-elastic-job
   job:
     task:
       dingTalk:
